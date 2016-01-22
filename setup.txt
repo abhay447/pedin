@@ -1,0 +1,16 @@
+1)Install all needed compilers, tools & libs. 
+Complete list is : 
+cmake make g++ libx11-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxrandr-dev libxext-dev libxi-dev
+by=> sudo apt-get install cmake make g++ libx11-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev libxrandr-dev libxext-dev libxi-dev
+
+2)Install glfw
+-> clone the repository=> git clone https://github.com/glfw/glfw.git
+-> change directory to glfw => cd glfw
+-> run the command => sudo cmake -G "Unix Makefiles"
+-> Build glfw dependencies => sudo apt-get install cmake xorg-dev libglu1-mesa-dev
+-> run the command =>sudo make
+-> run the command =>sudo make install
+This completes th eglfw installation
+
+3)Compiling a program
+=>g++ abc.cpp -lglfw3 -lGL -lGLEW -lm -ldl -lXinerama -lXrandr -lXi -lXcursor -lX11 -lXxf86vm -lpthread
