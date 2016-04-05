@@ -1,6 +1,8 @@
 #include <iostream>
 #include <math.h>
 #include <vector>
+#include <cstdlib>
+#include <ctime>
 
 // GLEW
 #define GLEW_STATIC
@@ -13,35 +15,25 @@
 // GLFW
 #include <GLFW/glfw3.h>
 
-#include "windowCreater.h"
-#include "vehicle.h"
-#include "collisions.h"
-#include "roads.h"
 
+#include "windowCreater.h"
+#include "SocialForce.cpp"
+#include "Environment.cpp"
 glm::mat4 View,Projection;
 glm::vec3 camPosition;
-vector<vehicle> allVehicles;
-vector<lane> allLanes;
-
+vector<Wall> myWalls;
+vector<Pedestrian> myPeds;
 int main()
 {
     createWindow();
     glViewport(0, 0, WIDTH, HEIGHT);
-    for(int i=0;i<7;i++)
-    {
-		vehicle myVehicle("Alto"+to_string(i),glm::vec3(-70*i+5,0.0f,0.0f),pow(i,2));
-		allVehicles.push_back(myVehicle);
-	}
+       
+    CreateMap();
+    AddAgents();
 	
-	for(int i=0;i<3;i++)
-    {
-		lane myLane(i);
-		allLanes.push_back(myLane);
-	}
-	
-	//Get matrix's uniform location and set matrix
     Projection = glm::perspective(glm::radians(45.0f), (float) 1300 / 800, 0.1f, 10000.0f);
-	camPosition = glm::vec3(0,0,200);                
+	camPosition = glm::vec3(50,70,3000);
+	
     while (!glfwWindowShouldClose(window))
     {
     	glfwPollEvents();
@@ -53,26 +45,26 @@ int main()
                 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        
-        for(int i=0;i<3;i++)
-    	{
-			allLanes[i].draw();
-		}
-        
-        if(allVehicles.size()>1)
-        	checkCollsions();
-        for(int i=0;i<allVehicles.size();i++)
-        	allVehicles[i].showVehicle();
-        	
+        if(myPeds.size()==0)
+        	break;
+        for(int i=0;i<myPeds.size();i++)
+        	myPeds[i].clearForces();
+        ApplyTargetAttractionForces();
+        ApplyPedestrianRepulsionForces();
+        ApplyWallRepulsionForces();
+
+        clearPedestrians();
+        for(int i=0;i<myPeds.size();i++)
+        	myPeds[i].draw();
+        for(int i=0;i<myWalls.size();i++)
+        	myWalls[i].draw();
         glfwSwapBuffers(window);
     }
     
-    for(int i=0;i<allVehicles.size();i++)
-    	allVehicles[i].renderer->clearBuffers();
-    
-    for(int i=0;i<3;i++)
-    	allLanes[i].clearBuffers();
-
+	for(int i=0;i<myPeds.size();i++)
+        	myPeds[i].destroy();
+	for(int i=0;i<myWalls.size();i++)
+       	myWalls[i].destroy();
     glfwTerminate();
     return 0;
 }

@@ -21,10 +21,10 @@ using namespace std;
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	float camHeight=camPosition.z;
-	if(camHeight<=990 && yoffset<0)
-		camHeight+=10;
-	if(camHeight>=20 && yoffset>0)
-		camHeight-=10;
+	if(camHeight<=9900 && yoffset<00)
+		camHeight+=100;
+	if(camHeight>=200 && yoffset>00)
+		camHeight-=100;
 	camPosition.z=camHeight;	
 }
 
@@ -33,22 +33,31 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     //std::cout << key << std::endl;
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GL_TRUE);
-    else if (key == GLFW_KEY_RIGHT && camPosition.x<990)
+    else if (key == GLFW_KEY_RIGHT && camPosition.x<9900)
     {
-    	camPosition.x += 10;
+    	camPosition.x += 100;
     }
-    else if (key == GLFW_KEY_LEFT && camPosition.x>-990)
+    else if (key == GLFW_KEY_LEFT && camPosition.x>-9900)
     {
-    	camPosition.x -= 10;
+    	camPosition.x -= 100;
     }
-    else if (key == GLFW_KEY_KP_ADD && camPosition.z>20)
+    else if (key == GLFW_KEY_KP_ADD && camPosition.z>200)
     {
-    	camPosition.z -= 10;
+    	camPosition.z -= 100;
     }
-    else if (key == GLFW_KEY_KP_SUBTRACT && camPosition.z<990)
+    else if (key == GLFW_KEY_KP_SUBTRACT && camPosition.z<9900)
     {
-    	camPosition.z += 10;
+    	camPosition.z += 100;
     }
+    else if (key == GLFW_KEY_UP)
+    {
+    	camPosition.y += 100;
+    }
+    else if (key == GLFW_KEY_DOWN)
+    {
+    	camPosition.y -= 100;
+    }
+    
 }
 
 

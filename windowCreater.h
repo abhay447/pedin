@@ -26,7 +26,7 @@ void createWindow()
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
     // Create a GLFWwindow object that we can use for GLFW's functions
-    window = glfwCreateWindow(WIDTH, HEIGHT, "LearnOpenGL", nullptr, nullptr);
+    window = glfwCreateWindow(WIDTH, HEIGHT, "Simport", nullptr, nullptr);
     glfwMakeContextCurrent(window);
     
     glfwSetScrollCallback(window,scroll_callback);
