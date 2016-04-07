@@ -25,6 +25,7 @@ vector<Wall> myWalls;
 vector<Pedestrian> myPeds;
 int main()
 {
+	clock_t begin = clock();
     createWindow();
     glViewport(0, 0, WIDTH, HEIGHT);
        
@@ -66,6 +67,9 @@ int main()
 	for(int i=0;i<myWalls.size();i++)
        	myWalls[i].destroy();
     glfwTerminate();
+    clock_t end = clock();
+	double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+	cout<<"Elapsed time "<<elapsed_secs<<endl;
     return 0;
 }
 

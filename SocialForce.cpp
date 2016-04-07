@@ -26,7 +26,7 @@ void ApplyWallRepulsionForces()
 			float force = 0.0f;
 			if(inWallForceZone(myWalls[j],myPeds[i]) == -1)	//wall collision
 			{
-				force = 30.0f;
+				force = getWallRepelMag(myWalls[j],myPeds[i]);//10.0f;
 				myPeds[i].px += 20*myWalls[j].nx;
 				myPeds[i].py += 20*myWalls[j].ny;
 			}
@@ -49,9 +49,10 @@ void ApplyPedestrianRepulsionForces()
 		{
 			float forceMagnitude = 0.0f;
 			float pedDistance = pow(pow((myPeds[i].px-myPeds[j].px),2) + pow((myPeds[i].py-myPeds[j].py),2),0.5f);
-			if(pedDistance<100)	//pedestrian collision
+			if(pedDistance<90)	//pedestrian collision
 			{
-				forceMagnitude = 10.0f;
+				forceMagnitude = 30.0f;
+				pedCollision(&myPeds.at(i),&myPeds.at(j));
 			}
 			else if(pedDistance<200)	//pedestrian repulsion
 			{

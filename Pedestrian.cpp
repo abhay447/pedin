@@ -52,14 +52,14 @@ void Pedestrian::draw()
 {	
 	vx += ax;
 	vy += ay;
-	if(vx >   0.6)
-		vx =  0.6;
-	if(vx < - 0.6)
-		vx =- 0.6;
-	if(vy >   0.6)
-		vy =  0.6;
-	if(vy < - 0.6)
-		vy =- 0.6;
+	if(vx >   1.6)
+		vx =  1.6;
+	if(vx < - 1.6)
+		vx =- 1.6;
+	if(vy >   1.6)
+		vy =  1.6;
+	if(vy < - 1.6)
+		vy =- 1.6;
 	px += vx;
 	py += vy;	
 	glm::mat4 Model;
