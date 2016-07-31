@@ -1,10 +1,16 @@
 #include <iostream>
+#include <fstream>
+#include <string>
+
 #include "Pedestrian.cpp"
 #include "Wall.cpp"
 #include "WallForce.cpp"
 #include "PedestrianForce.cpp"
 #include "TargetForce.cpp"
+
+
 #define _USE_MATH_DEFINES
+
 using namespace std;
 extern vector<Wall> myWalls;
 extern vector<Pedestrian> myPeds;
@@ -27,15 +33,17 @@ void ApplyWallRepulsionForces()
 			if(inWallForceZone(myWalls[j],myPeds[i]) == -1)	//wall collision
 			{
 				force = getWallRepelMag(myWalls[j],myPeds[i]);//10.0f;
-				myPeds[i].px += 20*myWalls[j].nx;
-				myPeds[i].py += 20*myWalls[j].ny;
+				myPeds[i].px += 2.5*myWalls[j].nx;
+				myPeds[i].py += 2.5*myWalls[j].ny;
+				myWalls[j].netForce += fabs(80.0*force);
+				myWalls[j].collisionCount += 1;
 			}
 			else if(inWallForceZone(myWalls[j],myPeds[i]) == 1)	//wall repulsion
 			{
 				force = getWallRepelMag(myWalls[j],myPeds[i]);
 			}
 			myPeds[i].ax += force*myWalls[j].nx;
-			myPeds[i].ay += force*myWalls[j].ny;
+			myPeds[i].ay += force*myWalls[j].ny;			
 		}
 	}
 }
@@ -51,7 +59,7 @@ void ApplyPedestrianRepulsionForces()
 			float pedDistance = pow(pow((myPeds[i].px-myPeds[j].px),2) + pow((myPeds[i].py-myPeds[j].py),2),0.5f);
 			if(pedDistance<90)	//pedestrian collision
 			{
-				forceMagnitude = 30.0f;
+				forceMagnitude = 15.0f;
 				pedCollision(&myPeds.at(i),&myPeds.at(j));
 			}
 			else if(pedDistance<200)	//pedestrian repulsion
@@ -92,5 +100,18 @@ void clearPedestrians()
 		}
 	}
 }
+
+void writeWallForces(double time)
+{
+	for(int i=0;i<myWalls.size();i++)
+	{
+		int passivePed = myPeds.size()-myWalls[i].collisionCount;
+		ofstream outfile;
+		outfile.open("forceStats/"+to_string(i)+".csv", std::ios_base::app);		
+		outfile << time<<","<<myWalls[i].collisionCount<<","<<passivePed<<","<<myWalls[i].netForce<<"\n";
+	}
+}
+
+
 
 

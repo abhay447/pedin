@@ -21,8 +21,11 @@ class Wall
 		GLfloat cx,cy;
 		GLfloat length;
 		GLfloat nx,ny;
+		GLfloat netForce;
+		int collisionCount;
 		void draw();
 		void destroy();
+		void clearForces();
 		Wall(int WID, GLfloat CX,GLfloat CY,GLfloat NX,GLfloat NY,GLfloat LENGTH);
     	WallRenderer* renderer;
 };
@@ -36,7 +39,15 @@ Wall::Wall(int WID, GLfloat CX,GLfloat CY,GLfloat NX,GLfloat NY,GLfloat LENGTH )
 	ny = NY;
 	length   = LENGTH;
 	renderer = new WallRenderer(length);
+	netForce = 0;
 }
+
+void Wall::clearForces()
+{
+	netForce = 0;
+	collisionCount = 0;
+}
+
 
 void Wall::draw()
 {
